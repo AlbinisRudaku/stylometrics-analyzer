@@ -95,6 +95,8 @@ stilo "./documents/sample.pdf" --format csv --output ./results/features.csv
 2. **csv**: Flattened data structure suitable for ML training or spreadsheet analysis
 3. **ml_json**: Curated features specifically formatted for machine learning tasks
 
+For more information on the output formats, see [METRICS_GUIDE.md](METRICS_GUIDE.md).
+
 ## Project Structure
 
 ```
