@@ -17,6 +17,7 @@ A comprehensive tool for analyzing writing style and document characteristics.
 pip install -r requirements.txt
 python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('averaged_perceptron_tagger')"
 pip install -e .
+python -m spacy download en_core_web_sm
 ```
 
 3. Usage
