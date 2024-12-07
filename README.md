@@ -2,6 +2,15 @@
 
 A comprehensive tool for analyzing writing style and document characteristics, providing detailed metrics and ML-ready outputs.
 
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Output Formats](#output-formats)
+- [Project Structure](#project-structure)
+- [Available Metrics](#available-metrics)
 
 ## Features
 
@@ -146,7 +155,7 @@ stylometrics-analyzer/
 
 ## Available Metrics
 
-See METRICS_GUIDE.md for detailed explanation of:
+See [METRICS_GUIDE.md](METRICS_GUIDE.md) for detailed explanation of:
 - Style metrics (complexity, consistency)
 - Writing patterns
 - Lexical features
