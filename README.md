@@ -2,6 +2,16 @@
 
 A comprehensive tool for analyzing writing style and document characteristics, providing detailed metrics and ML-ready outputs.
 
+## Contents
+
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Output Formats](#output-formats)
+- [Project Structure](#project-structure)
+- [Available Metrics](#available-metrics)
+- [Troubleshooting](#troubleshooting)
+
 ## Prerequisites
 
 - Python 3.8 or higher
