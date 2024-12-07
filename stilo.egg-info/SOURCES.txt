@@ -7,5 +7,7 @@ src/stylometric_analysis_app.py
 stilo.egg-info/PKG-INFO
 stilo.egg-info/SOURCES.txt
 stilo.egg-info/dependency_links.txt
+stilo.egg-info/entry_points.txt
 stilo.egg-info/requires.txt
 stilo.egg-info/top_level.txt
+tests/test_analysis.py

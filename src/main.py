@@ -1,30 +1,57 @@
+import logging.config
+import yaml
 from pathlib import Path
+import json
+from datetime import datetime
 from typing import Dict, Any
-from src.utils.data_exporter import DataExporter
-from src.visualization.dashboard import StyleDashboard
-from src.api.prediction_service import PredictionService
+from src.stylometric_analysis_app import StylometricAnalysisApp
 
-class StylometricAnalysisApp:
-    def __init__(self):
-        # ... existing initialization ...
-        self.data_exporter = DataExporter()
-        self.dashboard = StyleDashboard()
-        self.prediction_service = PredictionService('models/style_classifier.joblib')
+def setup_logging():
+    """Setup logging configuration"""
+    config_path = Path(__file__).parent / 'config' / 'logging.yaml'
+    if config_path.exists():
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+            logging.config.dictConfig(config)
+    else:
+        logging.basicConfig(level=logging.INFO)
+
+def main():
+    setup_logging()
+    logger = logging.getLogger(__name__)
     
-    async def analyze_and_predict(self, pdf_path: str) -> Dict[str, Any]:
-        # Get basic analysis
-        analysis_results = self.analyze_document(pdf_path)
+    try:
+        import argparse
+        parser = argparse.ArgumentParser(description='Analyze PDF document style')
+        parser.add_argument('pdf_path', help='Path to PDF file')
+        parser.add_argument('--output', help='Output file path')
+        parser.add_argument('--format', 
+                          choices=['dict', 'json', 'pretty_json', 'csv', 'ml_json'],
+                          default='dict',
+                          help='Output format (dict, json, pretty_json, csv, or ml_json)')
+        args = parser.parse_args()
+
+        # Initialize and run analysis
+        app = StylometricAnalysisApp()
+        logger.info(f"Processing document: {args.pdf_path}")
         
-        # Export for training
-        self.data_exporter.export_for_training(analysis_results, Path(pdf_path).name)
+        # Handle output path for CSV and ML JSON
+        if args.format in ['csv', 'ml_json'] and not args.output:
+            output_dir = Path('results')
+            output_dir.mkdir(exist_ok=True)
+            args.output = str(output_dir / f"analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{args.format}")
         
-        # Get AI predictions
-        predictions = await self.prediction_service.predict_style(analysis_results)
-        
-        # Combine results
-        analysis_results['predictions'] = predictions.dict()
-        
-        # Visualize results
-        self.dashboard.visualize_analysis(analysis_results)
-        
-        return analysis_results 
+        results = app.analyze_document(args.pdf_path, args.format, args.output)
+
+        # Display results or confirmation
+        if isinstance(results, str):
+            print(results)  # Print save confirmation
+        else:
+            print(json.dumps(results, indent=2))
+            
+    except Exception as e:
+        logger.exception("Critical error in application")
+        raise SystemExit(1)
+
+if __name__ == "__main__":
+    main()

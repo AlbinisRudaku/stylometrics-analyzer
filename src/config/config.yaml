@@ -1,0 +1,18 @@
+app:
+  version: "0.1"
+  name: "Stilo"
+
+analysis:
+  complexity_thresholds:
+    low: 30
+    medium: 50
+    high: 70
+  
+  readability_thresholds:
+    easy: 80
+    moderate: 60
+    difficult: 30
+
+model:
+  path: "models/style_classifier.joblib"
+  version: "1.0" 
