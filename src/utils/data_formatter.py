@@ -56,9 +56,9 @@ class DataFormatter:
         df = pd.DataFrame([ml_features])
         df.to_csv(output_path, index=False)
         
-    def to_ml_json(self, data: Dict[str, Any], output_path: str) -> None:
+    def to_ml_json(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Convert analysis results to ML-friendly JSON format"""
-        ml_features = {
+        return {
             'document_id': data['metadata']['filename'],
             'timestamp': data['metadata']['timestamp'],
             'features': {
@@ -91,7 +91,4 @@ class DataFormatter:
                 'vocabulary_usage': data['analysis']['writing_patterns']['vocabulary_usage'],
                 'sentence_structure': data['analysis']['writing_patterns']['sentence_structure']
             }
-        }
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(ml_features, f, indent=2) 
+        } 

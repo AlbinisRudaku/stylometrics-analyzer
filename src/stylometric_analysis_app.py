@@ -31,7 +31,7 @@ class StylometricAnalysisApp:
         self.console = Console()
         self.data_formatter = DataFormatter()
 
-    def analyze_document(self, pdf_path: str, output_format: str = 'dict', output_path: str = None) -> Union[Dict[str, Any], str]:
+    def analyze_document(self, pdf_path: str, output_format: str = 'json', output_path: str = None) -> Union[Dict[str, Any], str]:
         try:
             with self.console.status("[bold green]Analyzing document...") as status:
                 # Extract text from PDF
@@ -114,14 +114,8 @@ class StylometricAnalysisApp:
                 if output_format == 'csv' and output_path:
                     self.data_formatter.to_csv(results, output_path)
                     return f"Results saved to CSV: {output_path}"
-                elif output_format == 'ml_json' and output_path:
-                    self.data_formatter.to_ml_json(results, output_path)
-                    return f"Results saved to ML-friendly JSON: {output_path}"
-                elif output_format == 'json':
-                    return json.dumps(results)
-                elif output_format == 'pretty_json':
-                    return json.dumps(results, indent=2)
-                return results
+                else:  # json format (includes ML features)
+                    return results
                 
         except Exception as e:
             logger.error(f"Error analyzing document: {str(e)}")

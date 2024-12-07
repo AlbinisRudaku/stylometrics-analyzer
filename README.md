@@ -2,16 +2,6 @@
 
 A comprehensive tool for analyzing writing style and document characteristics, providing detailed metrics and ML-ready outputs.
 
-## Contents
-
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Output Formats](#output-formats)
-- [Project Structure](#project-structure)
-- [Available Metrics](#available-metrics)
-- [Troubleshooting](#troubleshooting)
-
 ## Prerequisites
 
 - Python 3.8 or higher
@@ -22,11 +12,11 @@ A comprehensive tool for analyzing writing style and document characteristics, p
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/AlbinisRudaku/stylometrics-analyzer.git
+git clone https://github.com/yourusername/stylometrics-analyzer.git
 cd stylometrics-analyzer
 ```
 
-2. Create and activate a virtual environment (optional):
+2. Create and activate a virtual environment:
 ```bash
 # Windows
 python -m venv venv
@@ -54,58 +44,78 @@ pip install -e .
 
 ## Usage
 
-### Output Formats
-
-1. Pretty JSON output (default, without --format flag):
+### Basic Analysis (Generates both JSON and CSV)
 ```bash
-python -m src.main "<path_to_pdf>" --output results/analysis.json
+python -m src.main "<path_to_pdf>"
 ```
+This will create both JSON and CSV files in the results directory with a timestamp.
 
-2. CSV format (for ML/data analysis, requires --format flag) (Still in BETA, data may be incomplete):
+### Specific Format Output
+
+1. JSON output only:
 ```bash
-python -m src.main "<path_to_pdf>" --format csv --output results/analysis.csv
-```
-or
-```bash
-stilo "<path_to_pdf>" --format csv --output results/analysis.csv
+python -m src.main "<path_to_pdf>" --format json
 ```
 
-3. ML-friendly JSON format (requires --format flag, recommended):
+2. CSV output only:
 ```bash
-python -m src.main "<path_to_pdf>" --format ml_json --output results/ml_features.json
+python -m src.main "<path_to_pdf>" --format csv
 ```
-or
+
+### Custom Output Location
+
+You can specify the output location (without extension):
 ```bash
-stilo "<path_to_pdf>" --format ml_json --output results/ml_features.json
+python -m src.main "<path_to_pdf>" --output ./my_results/analysis
 ```
 
 ### Examples
 
-Analyze a PDF file:
+1. Analyze a PDF and get both formats:
 ```bash
-python -m src.main "./documents/sample.pdf" --output ./results/analysis.json
-```
+python -m src.main "./documents/sample.pdf"
+
 or
-```bash
-stilo "./documents/sample.pdf" --output ./results/analysis.json
+stilo "./documents/sample.pdf"
+
+# Creates: 
+# - results/analysis_TIMESTAMP.json
+# - results/analysis_TIMESTAMP.csv
 ```
 
-Generate CSV for machine learning:
+2. Get only JSON output:
 ```bash
-python -m src.main "./documents/sample.pdf" --format csv --output ./results/features.csv
-```
+python -m src.main "./documents/sample.pdf" --format json
+
 or
-```bash
-stilo "./documents/sample.pdf" --format csv --output ./results/features.csv
+
+stilo "./documents/sample.pdf" --format json
+# Creates: ./results/analysis_TIMESTAMP.json
 ```
 
-## Output Formats Explained
+3. Get only CSV output:
+```bash
+python -m src.main "./documents/sample.pdf" --format csv
 
-1. **pretty_json**: Complete analysis with all metrics, formatted for readability
-2. **csv**: Flattened data structure suitable for ML training or spreadsheet analysis
-3. **ml_json**: Curated features specifically formatted for machine learning tasks
+or
 
-For more information on the output formats, see [METRICS_GUIDE.md](METRICS_GUIDE.md).
+stilo "./documents/sample.pdf" --format csv
+# Creates: ./results/analysis_TIMESTAMP.csv
+```
+
+## Output Formats
+
+1. **JSON** (default when format specified):
+   - Complete analysis with all metrics
+   - Formatted for readability (pretty-printed)
+   - Includes all features and analysis results
+
+2. **CSV** (optimized for ML):
+   - Flattened data structure
+   - Key metrics and features only
+   - Ready for machine learning or spreadsheet analysis
+
+When no format is specified, both JSON and CSV files are generated automatically.
 
 ## Project Structure
 

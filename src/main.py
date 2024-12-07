@@ -24,30 +24,51 @@ def main():
         import argparse
         parser = argparse.ArgumentParser(description='Analyze PDF document style')
         parser.add_argument('pdf_path', help='Path to PDF file')
-        parser.add_argument('--output', help='Output file path')
+        parser.add_argument('--output', help='Output file path base (without extension)')
         parser.add_argument('--format', 
-                          choices=['dict', 'json', 'pretty_json', 'csv', 'ml_json'],
-                          default='dict',
-                          help='Output format (dict, json, pretty_json, csv, or ml_json)')
+                          choices=['json', 'csv'],
+                          help='Output format (json or csv). If not specified, generates both')
         args = parser.parse_args()
 
         # Initialize and run analysis
         app = StylometricAnalysisApp()
         logger.info(f"Processing document: {args.pdf_path}")
         
-        # Handle output path for CSV and ML JSON
-        if args.format in ['csv', 'ml_json'] and not args.output:
-            output_dir = Path('results')
-            output_dir.mkdir(exist_ok=True)
-            args.output = str(output_dir / f"analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{args.format}")
+        # Handle output path
+        output_dir = Path('results')
+        output_dir.mkdir(exist_ok=True)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         
-        results = app.analyze_document(args.pdf_path, args.format, args.output)
-
-        # Display results or confirmation
-        if isinstance(results, str):
-            print(results)  # Print save confirmation
+        if args.format:
+            # Single format output
+            extension = '.json' if args.format == 'json' else '.csv'
+            output_path = args.output if args.output else str(output_dir / f"analysis_{timestamp}{extension}")
+            
+            # Get results
+            results = app.analyze_document(args.pdf_path, args.format, output_path)
+            
+            # Save results
+            if isinstance(results, str):
+                logger.info(results)  # Log CSV save message
+            else:
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    json.dump(results, f, indent=2)
+                logger.info(f"Results saved to: {output_path}")
         else:
-            print(json.dumps(results, indent=2))
+            # Generate both JSON and CSV
+            base_path = args.output if args.output else str(output_dir / f"analysis_{timestamp}")
+            
+            # Get and save JSON results
+            json_results = app.analyze_document(args.pdf_path, 'json')
+            json_path = f"{base_path}.json"
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(json_results, f, indent=2)
+            logger.info(f"JSON results saved to: {json_path}")
+            
+            # Get and save CSV results
+            csv_path = f"{base_path}.csv"
+            app.data_formatter.to_csv(json_results, csv_path)
+            logger.info(f"CSV results saved to: {csv_path}")
             
     except Exception as e:
         logger.exception("Critical error in application")
