@@ -2,6 +2,39 @@
 
 A comprehensive tool for analyzing writing style and document characteristics, providing detailed metrics and ML-ready outputs.
 
+
+## Features
+
+- **Comprehensive Analysis**: Extracts and analyzes multiple aspects of writing style
+  - Lexical features (word usage, vocabulary richness)
+  - Syntactic patterns (sentence structure, complexity)
+  - Structural elements (paragraph organization, text density)
+  - Readability metrics (Flesch Reading Ease, Gunning Fog)
+
+- **Multiple Output Formats**: 
+  - Detailed JSON reports
+  - ML-ready CSV format
+  - Human-readable summaries
+
+- **Advanced Metrics**:
+  - Style consistency scoring
+  - Document complexity analysis
+  - Writing pattern detection
+  - Vocabulary usage assessment
+
+- **Performance**:
+  - Efficient PDF text extraction
+  - Parallel processing for large documents
+  - Optimized feature calculations
+
+- **Developer-Friendly**:
+  - Modular architecture
+  - Extensive logging
+  - Clear documentation
+  - Type-safe implementation
+
+
+
 ## Prerequisites
 
 - Python 3.8 or higher
@@ -47,6 +80,14 @@ pip install -e .
 ### Basic Analysis (Generates both JSON and CSV)
 ```bash
 python -m src.main "<path_to_pdf>"
+
+or
+
+stilo "<path_to_pdf>"
+
+# Creates: 
+# - results/analysis_TIMESTAMP.json
+# - results/analysis_TIMESTAMP.csv
 ```
 This will create both JSON and CSV files in the results directory with a timestamp.
 
@@ -55,51 +96,23 @@ This will create both JSON and CSV files in the results directory with a timesta
 1. JSON output only:
 ```bash
 python -m src.main "<path_to_pdf>" --format json
+
+or
+
+
+stilo "<path_to_pdf>" --format json
+
+# Creates: ./results/analysis_TIMESTAMP.json
 ```
 
 2. CSV output only:
 ```bash
 python -m src.main "<path_to_pdf>" --format csv
-```
-
-### Custom Output Location
-
-You can specify the output location (without extension):
-```bash
-python -m src.main "<path_to_pdf>" --output ./my_results/analysis
-```
-
-### Examples
-
-1. Analyze a PDF and get both formats:
-```bash
-python -m src.main "./documents/sample.pdf"
-
-or
-stilo "./documents/sample.pdf"
-
-# Creates: 
-# - results/analysis_TIMESTAMP.json
-# - results/analysis_TIMESTAMP.csv
-```
-
-2. Get only JSON output:
-```bash
-python -m src.main "./documents/sample.pdf" --format json
 
 or
 
-stilo "./documents/sample.pdf" --format json
-# Creates: ./results/analysis_TIMESTAMP.json
-```
+stilo "<path_to_pdf>" --format csv
 
-3. Get only CSV output:
-```bash
-python -m src.main "./documents/sample.pdf" --format csv
-
-or
-
-stilo "./documents/sample.pdf" --format csv
 # Creates: ./results/analysis_TIMESTAMP.csv
 ```
 
