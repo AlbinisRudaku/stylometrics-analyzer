@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ALLOWED_ORIGINS=http://localhost:4200,https://yourdomain.com
+    volumes:
+      - ./models:/app/models 

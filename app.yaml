@@ -1,0 +1,9 @@
+name: stilo-api
+services:
+- name: api
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: your-username/stilo-api
+  build_command: pip install -r requirements.txt
+  run_command: uvicorn src.app:app --host 0.0.0.0 --port 8000 
