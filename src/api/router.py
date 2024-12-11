@@ -6,8 +6,6 @@ import tempfile
 import os
 import shutil
 from src.stylometric_analysis_app import StylometricAnalysisApp
-from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
 
 router = APIRouter()
 
@@ -61,17 +59,3 @@ async def analyze_document(file: UploadFile = File(...)):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-@router.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={"detail": exc.errors()}
-    )
-
-@router.exception_handler(Exception)
-async def general_exception_handler(request, exc):
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An internal server error occurred"}
-    )

@@ -1,11 +1,18 @@
 services:
   - type: web
     name: stilo-api
-    env: python
-    buildCommand: pip install -r requirements.txt && python -m spacy download en_core_web_sm
-    startCommand: uvicorn src.app:app --host 0.0.0.0 --port $PORT
+    env: docker
+    region: frankfurt  # or your preferred region
+    buildCommand: ""  # Docker will handle the build
+    startCommand: ""  # Docker will handle the start
+    healthCheckPath: /health
     envVars:
+      - key: PORT
+        value: 10000
+      - key: ALLOWED_ORIGINS
+        value: https://your-frontend-domain.com,http://localhost:4200
       - key: PYTHON_VERSION
         value: 3.8.0
-      - key: ALLOWED_ORIGINS
-        value: https://your-frontend-domain.com,http://localhost:4200 
+      - key: MAX_UPLOAD_SIZE
+        value: 10485760
+    autoDeploy: true
