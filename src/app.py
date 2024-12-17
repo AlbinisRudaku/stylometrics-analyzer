@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from .api.router import router
 import os
 
@@ -19,6 +21,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=422,
+        content={
+            "detail": "Validation Error",
+            "errors": [{"loc": err["loc"], "msg": err["msg"]} for err in exc.errors()]
+        }
+    )
 
 # Include the router
 app.include_router(router, prefix="/api")
